@@ -1,16 +1,20 @@
+<!DOCTYPE html>
 <html>
-    <head>
-    <title>Bienvenue a ma boutique</title>
-    <script src="script.js" defer ></script>
-    <link rel="stylesheet" href="style.css">
 
-    </head>
-    <body> 
-        <input type="text" name="" id="input" placeholder="Saisir votre produit">
-        <input type="text" name="" id="prix" placeholder="Prix">
-        <input type="file" id="imageInput" accept="image/*">
-        <button id="button" > Ajouter </button>
-        <h1></h1> 
+<head>
+    <title>Produits</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="pageproduit">
+
+    <div class="container">
+
+        <button onclick="goAjout()">Ajouter produit</button>
+
+        <h1></h1>
+
         <table>
             <thead>
                 <tr>
@@ -20,11 +24,16 @@
                     <th>Vendu</th>
                     <th>Date</th>
                     <th>Image</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="produits-body">
-            </tbody>
+
+            <tbody id="produits-body"></tbody>
+
         </table>
 
-    </body>
+    </div>
+
+</body>
+
 </html>

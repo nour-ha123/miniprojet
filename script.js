@@ -1,3 +1,11 @@
+function ajouter(){
+    window.location.href="index.html"
+}
+
+function goAjout(){
+    window.location.href="ajout.html"
+}
+
 var produits = JSON.parse(localStorage.getItem("produits")) || [];
 var tbody = document.getElementById("produits-body");
 var input = document.getElementById("input");
@@ -7,9 +15,11 @@ var button = document.getElementById("button");
 var compteur = document.querySelector("h1");
 
 function afficheProduits() {
+
     tbody.innerHTML = "";
 
     produits.forEach((el, index) => {
+
         var tr = document.createElement("tr");
         var tdId = document.createElement("td");
         var tdImage = document.createElement("td");
@@ -38,12 +48,16 @@ function afficheProduits() {
         imgEdit.style.width = "25px";
         imgEdit.style.marginRight = "10px";
         imgEdit.style.cursor = "pointer";
+
         imgEdit.onclick = () => { 
             var inputEdit = document.createElement("input"); 
             inputEdit.value = el.value;
+
             var save = document.createElement("button"); 
             save.textContent = "save";
+
             tdActions.append(inputEdit, save); 
+
             save.onclick = () => { 
                 imgEditFunc(el.id, inputEdit.value);
             }; 
@@ -53,20 +67,20 @@ function afficheProduits() {
         imgSupp.src = "/trash.png";
         imgSupp.style.width = "25px";
         imgSupp.style.cursor = "pointer";
+
         imgSupp.onclick = (event) => {
             event.stopPropagation();
             supprimerProduit(index);
-
         };
 
         tdActions.append(imgEdit, imgSupp);
 
         if (el.vendu === true) {
-            tdVendu.style.textDecoration = "line-through";
-            tdVendu.style.color = "red";
+            tdVendu.classList.add('vendu-style');
         }
 
         tdVendu.style.cursor = "pointer";
+
         tdVendu.onclick = () => {
             produitVendu(el);
         };
@@ -78,12 +92,15 @@ function afficheProduits() {
     compteurProduits();
 }
 
+if(button){
+
 button.onclick = function () {
 
     var file = imageInput.files[0];
     var reader = new FileReader();
 
     reader.onloadend = function () {
+
         var produit = {
             id: crypto.randomUUID(),
             value: input.value,
@@ -100,7 +117,7 @@ button.onclick = function () {
         prix.value = "";
         imageInput.value = "";
 
-        afficheProduits();
+        window.location.href="index.html";
     };
 
     if (file) {
@@ -108,6 +125,8 @@ button.onclick = function () {
     } else {
         reader.onloadend();
     }
+}
+
 }
 
 function produitVendu(el) {
@@ -142,12 +161,9 @@ function imgEditFunc(id, value) {
         } 
         return el; 
     }); 
+
     localStorage.setItem("produits", JSON.stringify(produits)); 
     afficheProduits(); 
-} 
-
+}
 
 afficheProduits();
-
-
-
