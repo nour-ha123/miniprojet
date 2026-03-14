@@ -1,6 +1,3 @@
-function ajouter(){
-    window.location.href="index.html"
-}
 
 function goAjout(){
     window.location.href="ajout.html"
