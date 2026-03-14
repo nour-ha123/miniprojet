@@ -8,16 +8,16 @@
 </head>
 
 <body class="pageajouter">
-    <div class="container">
+    <div class="container container-table">
 
         <h2>Ajouter un produit</h2>
 
-        <div class="form">
-            <input type="text" id="input" placeholder="Nom produit">
-            <input type="text" id="prix" placeholder="Prix">
+        <form id="form" class="form">
+            <input type="text" id="input" placeholder="Nom produit" required>
+            <input type="text" id="prix" placeholder="Prix" required>
             <input type="file" id="imageInput" accept="image/*">
-            <button id="button">Ajouter</button>
-        </div>
+            <button type="submit" id="button">Ajouter</button>
+        </form>
 
     </div>
 </body>

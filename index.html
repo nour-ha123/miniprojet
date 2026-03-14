@@ -8,12 +8,24 @@
 </head>
 
 <body class="pageproduit">
-
-    <div class="container">
-
-        <button onclick="goAjout()">Ajouter produit</button>
-
-        <h1></h1>
+    <div class="container container-table">
+        <section class="btntop">
+            <div class="btnleft">
+                <button onclick="goAjout()"><img src="/plus.png"> Ajouter produit</button>
+                <button id="clear"><img src="/delete.png"> Tout supprimer</button>
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Recherche" id="recherche">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+            </div>
+        </section>
+        <section class="trie">
+            <h1></h1> <button id="sort"> Trie <img src="/sort.png"></button>
+        </section>
 
         <table>
             <thead>

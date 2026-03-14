@@ -1,4 +1,3 @@
-
 function goAjout(){
     window.location.href="ajout.html"
 }
@@ -10,12 +9,15 @@ var prix = document.getElementById("prix");
 var imageInput = document.getElementById("imageInput");
 var button = document.getElementById("button");
 var compteur = document.querySelector("h1");
+var clear = document.querySelector("#clear");
+var sort = document.querySelector("#sort");
+var form = document.getElementById("form");
+var search = document.getElementById("recherche");
 
-function afficheProduits() {
-
+function afficheProduits(liste = produits) {
     tbody.innerHTML = "";
 
-    produits.forEach((el, index) => {
+    liste.forEach((el, index) => {
 
         var tr = document.createElement("tr");
         var tdId = document.createElement("td");
@@ -30,7 +32,7 @@ function afficheProduits() {
         tdAction.textContent = el.value;
         tdPrix.textContent = el.prix + " DT";
         tdVendu.textContent = el.vendu ? "Oui" : "Non";
-        tdDate.textContent = el.date;
+        tdDate.textContent = new Date(el.date).toLocaleString();
 
         if (el.image) {
             var img = document.createElement("img");
@@ -48,17 +50,21 @@ function afficheProduits() {
 
         imgEdit.onclick = () => { 
             var inputEdit = document.createElement("input"); 
+            inputEdit.style.border = "1px solid #ddd";
+            inputEdit.style.padding = "5px";
             inputEdit.value = el.value;
-
-            var save = document.createElement("button"); 
-            save.textContent = "save";
-
-            tdActions.append(inputEdit, save); 
-
-            save.onclick = () => { 
+            tdAction.innerHTML = "";
+            tdAction.appendChild(inputEdit);
+            inputEdit.focus();
+            inputEdit.addEventListener("keydown", function(e) {
+                if (e.key === "Enter") {
+                    imgEditFunc(el.id, inputEdit.value);
+                }
+            });
+            inputEdit.addEventListener("blur", function() {
                 imgEditFunc(el.id, inputEdit.value);
-            }; 
-        }; 
+            });
+        };
 
         var imgSupp = document.createElement("img");
         imgSupp.src = "/trash.png";
@@ -89,41 +95,40 @@ function afficheProduits() {
     compteurProduits();
 }
 
-if(button){
+if(form){
+    form.addEventListener("submit", function(e){
+        e.preventDefault(); 
 
-button.onclick = function () {
+        var file = imageInput.files[0];
+        var reader = new FileReader();
 
-    var file = imageInput.files[0];
-    var reader = new FileReader();
+        reader.onloadend = function () {
 
-    reader.onloadend = function () {
+            var produit = {
+                id: crypto.randomUUID(),
+                value: input.value,
+                prix: prix.value,
+                image: file ? reader.result : null,
+                date: new Date().toISOString(), 
+                vendu: false,
+            };
 
-        var produit = {
-            id: crypto.randomUUID(),
-            value: input.value,
-            prix: prix.value,
-            image: file ? reader.result : null,
-            date: new Date().toLocaleString(),
-            vendu: false,
+            produits.push(produit);
+            localStorage.setItem("produits", JSON.stringify(produits));
+
+            input.value = "";
+            prix.value = "";
+            imageInput.value = "";
+
+            window.location.href="index.html";
         };
 
-        produits.push(produit);
-        localStorage.setItem("produits", JSON.stringify(produits));
-
-        input.value = "";
-        prix.value = "";
-        imageInput.value = "";
-
-        window.location.href="index.html";
-    };
-
-    if (file) {
-        reader.readAsDataURL(file);
-    } else {
-        reader.onloadend();
-    }
-}
-
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            reader.onloadend();
+        }
+    });
 }
 
 function produitVendu(el) {
@@ -144,6 +149,24 @@ function compteurProduits() {
     }
 }
 
+if(clear){
+    clear.addEventListener("click", function () {
+        if (confirm("Vous être sur de vouloir supprimer tous les produits ?")) {
+            produits = [];
+            localStorage.setItem("produits", JSON.stringify(produits));
+            tbody.innerHTML = "";
+            compteurProduits();
+        }
+    });
+}
+
+if(sort){
+    sort.addEventListener("click", function () {
+        produits = produits.sort((a, b) => new Date(b.date) - new Date(a.date));
+        afficheProduits();
+    });
+}
+
 function imgEditFunc(id, value) { 
     produits = produits.map((el) => { 
         if (el.id === id) { 
@@ -161,6 +184,21 @@ function imgEditFunc(id, value) {
 
     localStorage.setItem("produits", JSON.stringify(produits)); 
     afficheProduits(); 
+}
+
+if(search){
+    search.addEventListener("input", function(){
+        var mot = search.value.toLowerCase();
+        var resultats = produits.filter((el)=>{
+            return el.value.toLowerCase().includes(mot);
+        });
+
+        if(mot === ""){
+            afficheProduits();
+        }else{
+            afficheProduits(resultats);
+        }
+    });
 }
 
 afficheProduits();
